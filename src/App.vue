@@ -6,11 +6,9 @@
         <input v-model="productInput" class="header-input" type="text" name="mainInput" id="mainInput" placeholder="What do you want to buy today?">
         <select v-model="selectedType" name="" id="selectTypeOfProduct" required>
           <option value="" disabled selected>Select product type</option>
-          <option value="fruitsAndVegetables">Fruit & Vegetables</option>
-          <option value="meat"> Meat</option>
-          <option value="dairy">Dairy</option>
-          <option value="pantry">Pantry</option>
-          <option value="home">Home</option>
+          <option v-for="category in categories" :key="category.type" :value="category.type">
+            {{ category.title }}
+          </option>
         </select>
         <button class="btn-sub">Add</button>
       </form>
@@ -30,56 +28,12 @@
   <main>
     <section>
       <div class="parent">
-        <div class="first-list">
-          <h2 class="list-title">Fruit & Vegetables</h2>
-          <ul>
-            <listItem 
-              v-for="product in filteredProducts('fruitsAndVegetables')"
-              :key="product.id"
-              :title="product.title"
-            />
-          </ul>
+        <div v-for="category in categories" :key="category.type" :class="category.class">
+          <productsList :categoryTitle="category.title" :categoryType="category.type" :products="products"/>
         </div>
-        <div class="second-list">
-          <h2 class="list-title">Meat</h2>
-          <ul>
-            <listItem 
-              v-for="product in filteredProducts('meat')"
-              :key="product.id"
-              :title="product.title"
-            />
-          </ul>
-        </div>
-        <div class="third-list">
-          <h2 class="list-title">Dairy</h2>
-          <ul>
-            <listItem
-              v-for="product in filteredProducts('dairy')"
-              :key="product.id"
-              :title="product.title"
-            />
-          </ul>
-        </div>
-        <div class="fourth-list">
-          <h2 class="list-title">Pantry</h2>
-          <ul>
-            <listItem
-              v-for="product in filteredProducts('pantry')"
-              :key="product.id"
-              :title="product.title"
-            />
-          </ul>
-        </div>
-        <div class="fifth-list">
-          <h2 class="list-title">Home</h2>
-          <ul>
-            <listItem
-              v-for="product in filteredProducts('home')"
-              :key="product.id"
-              :title="product.title"
-            />
-          </ul>
-        </div>
+        
+        
+        
       </div>
     </section>
   </main>
@@ -88,34 +42,52 @@
 
 
 <script setup>
-import listItem from "./components/listItem.vue";
-import footerTemplate from "./components/footer.vue";
-import {ref, computed} from "vue";
+  import productsList from "./components/ProductsList.vue";
+  import footerTemplate from "./components/footer.vue";
+  import {ref, computed, onMounted} from "vue";
 
-let productInput = ref('');
-let selectedType = ref('');
+  let productInput = ref('');
+  let selectedType = ref('');
+  const categories = [
+  { title: 'Fruit & Vegetables', type: 'fruitsAndVegetables', class:'first-list' },
+  { title: 'Meat', type: 'meat', class:'second-list' },
+  { title: 'Dairy', type: 'dairy', class:'third-list' },
+  { title: 'Pantry', type: 'pantry', class:'fourth-list' },
+  { title: 'Home', type: 'home', class:'fifth-list' }
+];
+  const products = ref([])
+  const remaining = computed(()=>products.value.length)
 
-const products = ref([])
-const remaining = computed(()=>products.value.length)
 
-
-const addProduct = (e)=>{
-  e.preventDefault();
-  if (!productInput.value.trim() || !selectedType.value) {
-    return;
+  const addProduct = (e)=>{
+    e.preventDefault();
+    if (!productInput.value.trim() || !selectedType.value) {
+      return;
+    }
+    const newProduct = {
+      id:Date.now(),
+      title: productInput.value.trim(),
+      type: selectedType.value,
+      completed: false,
+    }
+    products.value.push(newProduct)
+    productInput.value = '';
+    selectedType.value = ''
+    saveProductsToLocalStorage();
   }
-  products.value.push({
-    id:Date.now(),
-    title: productInput.value.trim(),
-    type: selectedType.value,
-    completed: false,
-  })
-  productInput.value = '';
-  selectedType.value = ''
-}
 
-const filteredProducts = (type) => {
-  return products.value.filter(product => product.type === type);
-}
+  const saveProductsToLocalStorage = () => {
+    localStorage.setItem('products', JSON.stringify(products.value));
+  };
+
+  const loadProductsFromLocalStorage = () => {
+    const storedProducts = localStorage.getItem('products');
+    if (storedProducts) {
+      products.value = JSON.parse(storedProducts);
+    }
+  };
+  onMounted(()=>{
+    loadProductsFromLocalStorage();
+  })
 
 </script>
