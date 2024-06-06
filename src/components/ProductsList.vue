@@ -8,7 +8,7 @@
                     <use xlink:href="#icon-checkmark"></use>
                 </svg>
                 <p>{{product.title}}</p>
-                <button type="button">X</button>
+                <button @click="remove(product.id)" type="button">X</button>
             </li>
         </ul>
 </template>
@@ -21,7 +21,10 @@ const props = defineProps({
     categoryType:String,
     products: Array,
 })
-
+const emit = defineEmits(['remove'])
+const remove = (id)=>{
+    emit('remove', id)
+}
 const filteredProducts = (type) => {
     return props.products.filter(product => product.type === props.categoryType);
   }
