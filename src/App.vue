@@ -29,7 +29,7 @@
     <section>
       <div class="parent">
         <div v-for="category in categories" :key="category.type" :class="category.class">
-          <productsList :categoryTitle="category.title" :categoryType="category.type" :products="products"/>
+          <productsList :categoryTitle="category.title" :categoryType="category.type" :products="products" @remove="removeProduct"/>
         </div>
         
         
@@ -44,7 +44,7 @@
 <script setup>
   import productsList from "./components/ProductsList.vue";
   import footerTemplate from "./components/footer.vue";
-  import {ref, computed, onMounted} from "vue";
+  import {ref, computed, onMounted, watch} from "vue";
 
   let productInput = ref('');
   let selectedType = ref('');
@@ -57,8 +57,10 @@
 ];
   const products = ref([])
   const remaining = computed(()=>products.value.length)
-
-
+  const saveProductsToLocalStorage = () => {
+      localStorage.setItem('products', JSON.stringify(products.value));
+    };
+  watch(products, saveProductsToLocalStorage, { deep: true });
   const addProduct = (e)=>{
     e.preventDefault();
     if (!productInput.value.trim() || !selectedType.value) {
@@ -76,9 +78,7 @@
     saveProductsToLocalStorage();
   }
 
-  const saveProductsToLocalStorage = () => {
-    localStorage.setItem('products', JSON.stringify(products.value));
-  };
+  
 
   const loadProductsFromLocalStorage = () => {
     const storedProducts = localStorage.getItem('products');
@@ -89,5 +89,7 @@
   onMounted(()=>{
     loadProductsFromLocalStorage();
   })
-
+  const removeProduct = (id) =>{
+    products.value = products.value.filter((product) => product.id !== id)
+  }
 </script>
