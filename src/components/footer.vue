@@ -1,9 +1,9 @@
 <template>
     <footer>
         <span class="wrap-span">
-            <p>{{num}}</p>
+            <p>{{ remaining}}</p>
             <span>
-                <p>items left</p>
+                <p>{{remaining === 1 ? 'item' : 'items'}} left</p>
             </span>
         </span>
         <div class="footer-container">
@@ -12,7 +12,7 @@
                 <li><a class="footer-link" href="#/active">Active</a></li>
                 <li><a class="footer-link" href="#/completed">Completed</a></li>
             </ul>
-            <button @click="increment" type="button">Clear completed</button>
+            <button type="button">Clear completed</button>
         </div>
     </footer>
 </template>
@@ -21,10 +21,6 @@
 <script setup>
 import { defineProps, defineEmits } from 'vue';
 const props = defineProps({
-    num: Number,
+    remaining: Number,
 })
-const emit = defineEmits(['increment'])
-const increment = ()=>{
-    emit("increment")
-}
 </script>
