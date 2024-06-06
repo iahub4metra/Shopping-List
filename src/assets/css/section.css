@@ -1,0 +1,76 @@
+.list-title {
+    text-align: center;
+    font-size: 24px;
+    margin: 12px 0 20px 0;
+}
+
+
+.list-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px dashed #ccc;
+    position: relative;
+}
+
+.list-item input[type="checkbox"] {
+    margin: 0;
+}
+
+.list-item p {
+    margin: 0;
+    flex-grow: 1;
+    transition: text-decoration 250ms cubic-bezier(0.4, 0.2, 0, 0.1);
+}
+
+.list-item button {
+    margin: 0;
+    padding: 5px 10px;
+    font-size: 18px;
+    background-color: inherit;
+    color: white;
+    border: 1px solid #848484;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: color 250ms cubic-bezier(0.4, 0.2, 0, 0.1), transform 250ms cubic-bezier(0.4, 0.2, 0, 0.1);
+}
+
+.list-item button:hover {
+    color: #ccc;
+    transform: scale(1.1);
+}
+
+.svg-icon {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    stroke-width: 1px;
+    padding: 4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #848484;
+}
+
+#checkbox {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    margin: auto 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+#checkbox~svg>use {
+    fill: transparent;
+    transition: fill 250ms cubic-bezier(0.4, 0.2, 0, 0.1);
+}
+
+#checkbox:checked~svg>use {
+    fill: inherit;
+}
+
+#checkbox:checked~p {
+    text-decoration: line-through;
+}
