@@ -5,14 +5,17 @@
         <svg class="svg-icon">
             <use xlink:href="#icon-checkmark"></use>
         </svg>
-        <p>Apples</p>
+        <p>{{title}}</p>
         <button type="button">X</button>
     </li>
 </template>
 
 <script setup>
 import checkmarkIcon from './icons/checkmarkIcon.vue'
-
+import { defineProps, defineEmits } from 'vue';
+const props = defineProps({
+    title: String,
+})
 
 
 
