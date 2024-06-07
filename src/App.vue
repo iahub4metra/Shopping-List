@@ -28,12 +28,9 @@
   <main>
     <section>
       <div class="parent">
-        <div v-for="category in categories" :key="category.type" :class="category.class">
+        <div v-for="category in categories" :key="category.type" :class="category.class" v-show="productsByCategory[category.type].length">
           <productsList :categoryTitle="category.title" :categoryType="category.type" :products="products" @remove="removeProduct"/>
         </div>
-        
-        
-        
       </div>
     </section>
   </main>
@@ -55,12 +52,34 @@
   { title: 'Pantry', type: 'pantry', class:'fourth-list' },
   { title: 'Home', type: 'home', class:'fifth-list' }
 ];
+  const productsByCategory = ref({
+    fruitsAndVegetables: [],
+    meat: [],
+    dairy:[],
+    pantry:[],
+    home:[],
+  })
   const products = ref([])
   const remaining = computed(()=>products.value.length)
   const saveProductsToLocalStorage = () => {
       localStorage.setItem('products', JSON.stringify(products.value));
-    };
+  };
+
+
+  const loadProductsFromLocalStorage = () => {
+    const storedProducts = localStorage.getItem('products');
+    if (storedProducts) {
+      products.value = JSON.parse(storedProducts);
+      products.value.forEach(product => {
+        productsByCategory.value[product.type].push(product)
+      })
+    }
+  };
+
+  onMounted(()=>{loadProductsFromLocalStorage();})
+
   watch(products, saveProductsToLocalStorage, { deep: true });
+
   const addProduct = (e)=>{
     e.preventDefault();
     if (!productInput.value.trim() || !selectedType.value) {
@@ -72,24 +91,17 @@
       type: selectedType.value,
       completed: false,
     }
+    productsByCategory.value[selectedType.value].push(newProduct)
     products.value.push(newProduct)
     productInput.value = '';
     selectedType.value = ''
     saveProductsToLocalStorage();
   }
 
-  
-
-  const loadProductsFromLocalStorage = () => {
-    const storedProducts = localStorage.getItem('products');
-    if (storedProducts) {
-      products.value = JSON.parse(storedProducts);
-    }
-  };
-  onMounted(()=>{
-    loadProductsFromLocalStorage();
-  })
   const removeProduct = (id) =>{
     products.value = products.value.filter((product) => product.id !== id)
+    Object.keys(productsByCategory.value).forEach(category => {
+      productsByCategory.value[category] = productsByCategory.value[category].filter(product => product.id !== id);
+    })
   }
 </script>
