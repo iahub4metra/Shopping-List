@@ -3,16 +3,19 @@
         <span class="wrap-span">
             <p>{{ remaining}}</p>
             <span>
-                <p>{{remaining === 1 ? 'item' : 'items'}} left</p>
+                <p>{{remaining === 1 ? 'product' : 'products'}} left</p>
             </span>
         </span>
         <div class="footer-container">
             <ul>
-                <li><a class="footer-link" href="#/all">All</a></li>
-                <li><a class="footer-link" href="#/active">Active</a></li>
-                <li><a class="footer-link" href="#/completed">Completed</a></li>
+                <li><a class="footer-link" href="#/all" :class="{ selected: visibility === 'all'}" >All</a></li>
+                <li><a class="footer-link" href="#/active" :class="{ selected: visibility === 'active' }" >Active</a></li>
+                <li><a class="footer-link" href="#/completed" :class="{ selected: visibility === 'completed' }" >Completed</a></li>
             </ul>
-            <button type="button">Clear completed</button>
+            <transition name="fade">
+                <button @click="clearCompletedProducts" v-if="showOrNot > 0" type="button">Clear completed</button>
+            </transition>
+            
         </div>
     </footer>
 </template>
@@ -22,5 +25,20 @@
 import { defineProps, defineEmits } from 'vue';
 const props = defineProps({
     remaining: Number,
-})
+    visibility: String,
+    showOrNot: Number,
+});
+const emit = defineEmits(['clearCompletedProducts'])
+const clearCompletedProducts = ()=>{
+    emit('clearCompletedProducts')
+}
 </script>
+
+<style scoped>
+    .fade-enter-active, .fade-leave-active{
+        transition: opacity 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .fade-enter-from, .fade-leave-to{
+        opacity: 0;
+    }
+</style>
