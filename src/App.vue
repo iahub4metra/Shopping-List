@@ -29,12 +29,12 @@
     <section>
       <div class="parent">
         <div v-for="category in categories" :key="category.type" :class="category.class" v-show="productsByCategory[category.type].length">
-          <productsList :categoryTitle="category.title" :categoryType="category.type" :products="products" @remove="removeProduct"/>
+          <productsList :categoryTitle="category.title" :categoryType="category.type" :products="filteredProductsByCategory(category.type)" @remove="removeProduct"/>
         </div>
       </div>
     </section>
   </main>
-  <footerTemplate :remaining="remaining"/>
+  <footerTemplate :remaining="remaining" :visibility="visibility" @clearCompletedProducts="clearCompletedProducts" :showOrNot="completedCount"/>
 </template>
 
 
@@ -42,6 +42,14 @@
   import productsList from "./components/ProductsList.vue";
   import footerTemplate from "./components/footer.vue";
   import {ref, computed, onMounted, watch} from "vue";
+
+  const filters = {
+    all: (products) => products,
+    active: (products) => products.filter((product) => !product.completed),
+    completed: (products) => products.filter((product) => product.completed)
+  };
+
+  const visibility = ref('all');
 
   let productInput = ref('');
   let selectedType = ref('');
@@ -60,7 +68,8 @@
     home:[],
   })
   const products = ref([])
-  const remaining = computed(()=>products.value.length)
+  const remaining = computed(()=> products.value.filter((product)=>!product.completed).length)
+  const completedCount = computed(()=>products.value.filter((product)=>product.completed).length)
   const saveProductsToLocalStorage = () => {
       localStorage.setItem('products', JSON.stringify(products.value));
   };
@@ -75,8 +84,20 @@
       })
     }
   };
-
-  onMounted(()=>{loadProductsFromLocalStorage();})
+  const onHashChange = ()=> {
+      let hash = window.location.hash.replace(/#\/?/, '');
+      if (filters[hash]) {
+        visibility.value = hash;
+      } else {
+        window.location.hash = '';
+        visibility.value = 'all';
+      }
+    };
+  onMounted(()=>{
+    loadProductsFromLocalStorage();
+    window.addEventListener('hashchange', onHashChange);
+    onHashChange();
+  })
 
   watch(products, saveProductsToLocalStorage, { deep: true });
 
@@ -103,5 +124,16 @@
     Object.keys(productsByCategory.value).forEach(category => {
       productsByCategory.value[category] = productsByCategory.value[category].filter(product => product.id !== id);
     })
+  };
+  const filteredProductsByCategory = (categoryType) => {
+  return filters[visibility.value](products.value.filter(product => product.type === categoryType));
+  };
+
+  const clearCompletedProducts = (completed)=>{
+    products.value = products.value.filter((product)=> !product.completed)
+    Object.keys(productsByCategory.value).forEach(category => {
+      productsByCategory.value[category] = productsByCategory.value[category].filter(product => !product.completed);
+    })
   }
+  
 </script>
