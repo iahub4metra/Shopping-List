@@ -28,7 +28,7 @@
   <main>
     <section>
       <div class="parent">
-        <div v-for="category in categories" :key="category.type" :class="category.class" v-show="productsByCategory[category.type].length">
+        <div v-for="category in filteredCategories" :key="category.type" :class="category.class">
           <productsList :categoryTitle="category.title" :categoryType="category.type" :products="filteredProductsByCategory(category.type)" @remove="removeProduct"/>
         </div>
       </div>
@@ -135,5 +135,7 @@
       productsByCategory.value[category] = productsByCategory.value[category].filter(product => !product.completed);
     })
   }
-  
+  const filteredCategories = computed(() => {
+  return categories.filter((category) => filteredProductsByCategory(category.type).length > 0);
+});
 </script>
