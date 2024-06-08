@@ -1,7 +1,7 @@
 body {
     padding: 15px 0;
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 14px;
+    line-height: 20px;
     font-family: 'Glegoo', serif;
     background-color: #f1aa60;
     color: #3d3939;
@@ -13,4 +13,31 @@ footer {
     max-width: 1180px;
     padding: 15px 20px;
     margin: 0 auto;
+}
+
+@media screen and (min-width:768px) {
+    body {
+        line-height: 22px;
+    }
+
+    header,
+    main,
+    footer {
+        max-width: 768px;
+    }
+}
+
+
+
+@media screen and (min-width:1180px) {
+    body {
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    header,
+    main,
+    footer {
+        max-width: 1180px;
+    }
 }

@@ -2,8 +2,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 150px;
+    gap: 40px;
     padding: 12px 0;
+    flex-direction: column-reverse;
 }
 
 
@@ -27,7 +28,9 @@
 
 .input-container {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
 }
 
 .header-input {
@@ -39,12 +42,14 @@
     outline: transparent;
     background-color: #f5b26a;
     margin-right: 8px;
+    width: 216px;
 }
 
 .header-input::placeholder {
     font-size: 14px;
     line-height: 16px;
     color: inherit;
+    opacity: 0.6;
 }
 
 #selectTypeOfProduct {
@@ -80,4 +85,30 @@
 .btn-sub:hover,
 .btn-sub:focus {
     background-color: #d32f2f;
+}
+
+
+
+@media screen and (min-width:768px) {
+    .header {
+        flex-direction: row;
+    }
+
+    .input-container {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .header-input::placeholder {
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+}
+
+
+@media screen and (min-width:1180px) {
+    .header {
+        gap: 150px;
+    }
 }
