@@ -17,7 +17,22 @@
 
     .parent div ul {
         overflow-y: scroll;
-        max-height: 270px;
+        max-height: 214px;
+        scrollbar-color: darkred transparent;
+    }
+
+    .parent div ul::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .parent div ul::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .parent div ul::-webkit-scrollbar-thumb {
+        background-color: darkred;
+        border-radius: 6px;
+        border: 3px solid transparent;
     }
 
 }
@@ -26,7 +41,7 @@
     .parent {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 270px);
         grid-column-gap: 20px;
         grid-row-gap: 20px;
         flex-wrap: nowrap;
@@ -34,6 +49,10 @@
 
     .first-list {
         grid-area: 1 / 1 / 3 / 2;
+    }
+
+    .parent .first-list ul {
+        max-height: 484px;
     }
 
     .second-list {
