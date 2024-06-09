@@ -10,7 +10,17 @@
             <ul>
                 <li><a class="footer-link" href="#/all" :class="{ selected: visibility === 'all'}" >All</a></li>
                 <li><a class="footer-link" href="#/active" :class="{ selected: visibility === 'active' }" >Active</a></li>
-                <li><a class="footer-link" href="#/completed" :class="{ selected: visibility === 'completed' }" >Completed</a></li>
+                <transition name="fade">
+                    <li>
+                        <a 
+                        class="footer-link" 
+                        href="#/completed" 
+                        :class="{ selected: visibility === 'completed'}" 
+                        v-if="showOrNot > 0"
+                        >Completed
+                        </a>
+                    </li>
+                </transition>
             </ul>
             <transition name="fade">
                 <button @click="clearCompletedProducts" v-if="showOrNot > 0" type="button">Clear completed</button>
