@@ -43,6 +43,11 @@ footer {
     padding: 4px 12px;
 }
 
+.footer-link .disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 .selected {
     border: 1px solid #f44336;
 }
