@@ -34,7 +34,11 @@
       </div>
     </section>
   </main>
-  <footerTemplate :remaining="remaining" :visibility="visibility" @clearCompletedProducts="clearCompletedProducts" :showOrNot="completedCount"/>
+  <footerTemplate 
+    :remaining="remaining" 
+    :visibility="visibility" 
+    @clearCompletedProducts="clearCompletedProducts" 
+    :showOrNot="completedCount" />
 </template>
 
 
@@ -136,6 +140,8 @@
     })
   }
   const filteredCategories = computed(() => {
-  return categories.filter((category) => filteredProductsByCategory(category.type).length > 0);
-});
+    return categories.filter((category) => filteredProductsByCategory(category.type).length > 0);
+  });
+  
+
 </script>
