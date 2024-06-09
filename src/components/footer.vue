@@ -6,27 +6,24 @@
                 <p>{{remaining === 1 ? 'product' : 'products'}} left</p>
             </span>
         </span>
-        <div class="footer-container">
+        <transition name="fade">
+            <div class="footer-container" v-if="showOrNot > 0">
             <ul>
                 <li><a class="footer-link" href="#/all" :class="{ selected: visibility === 'all'}" >All</a></li>
                 <li><a class="footer-link" href="#/active" :class="{ selected: visibility === 'active' }" >Active</a></li>
-                <transition name="fade">
                     <li>
                         <a 
                         class="footer-link" 
                         href="#/completed" 
                         :class="{ selected: visibility === 'completed'}" 
-                        v-if="showOrNot > 0"
                         >Completed
                         </a>
                     </li>
-                </transition>
             </ul>
-            <transition name="fade">
-                <button @click="clearCompletedProducts" v-if="showOrNot > 0" type="button">Clear completed</button>
-            </transition>
-            
+                <button @click="clearCompletedProducts" type="button">Clear completed</button>
         </div>
+        </transition>
+        
     </footer>
 </template>
 
@@ -46,9 +43,9 @@ const clearCompletedProducts = ()=>{
 
 <style scoped>
     .fade-enter-active, .fade-leave-active{
-        transition: opacity 500ms cubic-bezier(0.4, 0, 0.2, 1);
+        transition: transform 1000ms cubic-bezier(0.4, 0, 0.2, 1);
     }
     .fade-enter-from, .fade-leave-to{
-        opacity: 0;
+        transform: translateX(130%);
     }
 </style>
