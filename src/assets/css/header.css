@@ -67,7 +67,8 @@
     background-position: right 10px center;
     background-size: 16px;
     margin-right: 4px;
-    color: #fff;
+    -webkit-appearance: none;
+    color: #131313;
 }
 
 .btn-sub {
