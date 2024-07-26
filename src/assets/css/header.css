@@ -67,7 +67,9 @@
     background-position: right 10px center;
     background-size: 16px;
     margin-right: 4px;
-    -webkit-appearance: none;
+}
+
+#selectTypeOfProduct>option {
     color: #131313;
 }
 
