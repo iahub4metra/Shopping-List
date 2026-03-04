@@ -60,6 +60,7 @@
   const categories = [
   { title: 'Fruit & Vegetables', type: 'fruitsAndVegetables', class:'first-list' },
   { title: 'Meat', type: 'meat', class:'second-list' },
+  {title: 'Frozen', type: 'frozen', class: 'sixth-list'},
   { title: 'Dairy', type: 'dairy', class:'third-list' },
   { title: 'Pantry', type: 'pantry', class:'fourth-list' },
   { title: 'Home', type: 'home', class:'fifth-list' }
@@ -67,6 +68,7 @@
   const productsByCategory = ref({
     fruitsAndVegetables: [],
     meat: [],
+    frozen: [],
     dairy:[],
     pantry:[],
     home:[],
